@@ -1,0 +1,19 @@
+# Datenanalyse & Manipulation
+pandas
+numpy
+
+# Visualisierung
+matplotlib
+seaborn
+plotly
+
+# Machine Learning
+scikit-learn
+
+# Jupyter Notebook Support
+ipykernel
+notebook
+
+# Utilities
+tqdm
+python-dotenv
