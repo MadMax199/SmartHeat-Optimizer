@@ -147,7 +147,7 @@ def house_info_load(data_path: str = None):
     ])
 
 
-def processed_data_load(file_path: str):
+def processed_data_load(path: str):
     """
     Lädt den bereits kombinierten und bereinigten Datensatz aus dem processed-Ordner.
     """
@@ -155,7 +155,7 @@ def processed_data_load(file_path: str):
         # Wir nutzen infer_schema_length=10000, damit Polars die 
         # Datentypen (Float, Int, String) nach dem Join wieder korrekt erkennt.
         df = pl.read_csv(
-            file_path,
+            path,
             separator=";",
             infer_schema_length=10000,
             ignore_errors=True
