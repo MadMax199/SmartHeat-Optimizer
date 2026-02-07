@@ -137,7 +137,7 @@ def household_load(data_path: str = None):
    
    df = pl.read_csv(
             search_pattern,
-            separator=";", # Prüfe, ob households.csv auch Semikolon nutzt
+            separator=";", 
             infer_schema_length=1000,
             ignore_errors=True
         )
@@ -146,14 +146,21 @@ def household_load(data_path: str = None):
 
 
 def household_metainfo_load(data_path: str = None):
+    search_pattern = os.path.join(data_path, "*.csv")
+    
+    df = pl.read_csv(
+        search_pattern,
+        separator=";",
+        infer_schema_length=1000,
+        ignore_errors=True,
+        # Tipp: Probiere try_parse_dates=True, das erkennt viele Formate automatisch
+        try_parse_dates=True 
+    )
 
+    # Spaltennamen direkt am Anfang klein machen, damit die Auswahl einfacher ist
+    df = df.rename({col: col.lower() for col in df.columns})
 
-   search_pattern = os.path.join(data_path, "*.csv")
-   
-   df = pl.read_csv(
-            search_pattern,
-            separator=";", 
-            infer_schema_length=1000,
-            ignore_errors=True
-        )
-   return df.rename({col: col.lower() for col in df.columns})
+    return df.with_columns([
+        pl.col("visit_date").str.to_date(format="%d.%m.%Y", strict=False),
+        pl.col("visit_year").cast(pl.String).str.to_date(format="%Y", strict=False)
+    ])
