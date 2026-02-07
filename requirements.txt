@@ -17,3 +17,6 @@ notebook
 # Utilities
 tqdm
 python-dotenv
+
+selenium 
+tqdm
