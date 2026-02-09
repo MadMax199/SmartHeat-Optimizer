@@ -1,104 +1,93 @@
-from entsoe import EntsoePandasClient
+
+import os
 import pandas as pd
 import polars as pl
+from pathlib import Path
+from dotenv import load_dotenv
+from entsoe import EntsoePandasClient
 
-client = EntsoeRawClient(api_key=<YOUR API KEY>)
-
-<<<<<<< Updated upstream
-start = pd.Timestamp('20181103', tz='Europe/Zurich')
-end = pd.Timestamp('20240321', tz='Europe/Brussels')
-country_code = 'CH'
-
-try:
-    print(f"Lade Day-Ahead Preise für {country_code}...")
-
-    # Diese Methode gibt eine saubere Zeitreihe (Pandas Series) zurück
-    # Intern nutzt sie 'query_day_ahead_prices'
-    prices_series = client.query_day_ahead_prices(country_code, start=start, end=end)
-
-    # 2. Umwandlung in Polars
-    # Wir machen aus der Pandas Series ein DataFrame
-    df_pd = prices_series.reset_index()
-    df_pd.columns = ["timestamp", "price_eur_mwh"]
-    
-    # In Polars DataFrame konvertieren
-    df = pl.from_pandas(df_pd)
-
-    # 3. Baseload (Tagesdurchschnitt) berechnen
-    # Das ist das Äquivalent zu dem, was du bei EPEX Spot als "Baseload" siehst
-    df_daily = df.group_by(pl.col("timestamp").dt.date()).agg(
-        pl.col("price_eur_mwh").mean().alias("swissix_base")
-    ).sort("timestamp")
-
-    print(df_daily)
-
-    # 4. Speichern
-    df_daily.write_csv("raw\prices\swissix_prices_ch.csv")
-    print("\nDatei 'swissix_prices_ch.csv' wurde erstellt.")
-
-except Exception as e:
-    print(f"Fehler: {e}")
-=======
 # =============================
-# API KEY
+# KONFIGURATION & API SETUP
 # =============================
-API_KEY = "65129fd6-82f2-4f86-9dff-75f77b71689e"
+# Lädt die Variablen aus der .env Datei
+load_dotenv()
+
+API_KEY = os.getenv("ENTSOE_API_KEY")
+if not API_KEY:
+    raise ValueError("❌ API_KEY nicht gefunden! Hast du die .env Datei erstellt?")
 
 client = EntsoePandasClient(api_key=API_KEY)
 
+# Parameter
+COUNTRY_CODE = "CH"
+START_TIME = pd.Timestamp("2018-01-01", tz="Europe/Brussels")
+END_TIME = pd.Timestamp("2024-03-21", tz="Europe/Brussels")
 
 # =============================
-# PARAMETER
+# DATEN DOWNLOAD (BATCH-MODUS)
 # =============================
-country_code = "CH"
+all_prices = []
+current_start = START_TIME
 
-start = pd.Timestamp("2018-01-01", tz="Europe/Brussels")
-end = pd.Timestamp("2024-03-21", tz="Europe/Brussels")
+print(f"🚀 Starte Download der Day-Ahead Preise für {COUNTRY_CODE}")
 
+while current_start < END_TIME:
+    # ENTSO-E Abfragen funktionieren oft besser in kleineren Häppchen (z.B. 1 Jahr)
+    current_end = min(current_start + pd.DateOffset(years=1), END_TIME)
+    
+    print(f"  → Lade Zeitraum: {current_start.date()} bis {current_end.date()}")
+    
+    try:
+        s = client.query_day_ahead_prices(
+            COUNTRY_CODE,
+            start=current_start,
+            end=current_end,
+        )
+
+        if isinstance(s, pd.Series) and not s.empty:
+            all_prices.append(s)
+        else:
+            print("    ⚠️ Keine Daten für diesen Zeitraum erhalten.")
+
+    except Exception as e:
+        print(f"    ❌ Fehler beim Download: {e}")
+
+    current_start = current_end
 
 # =============================
-# DOWNLOAD
+# DATENVERARBEITUNG (POLARS)
 # =============================
-print(f"Lade Day-Ahead Preise für {country_code}")
+if not all_prices:
+    raise ValueError("❌ Es wurden überhaupt keine Daten geladen. Skript abgebrochen.")
 
-prices = client.query_day_ahead_prices(
-    country_code,
-    start=start,
-    end=end,
-)
+# 1. Pandas Series zusammenführen & Duplikate entfernen (an den Jahresgrenzen)
+combined_prices = pd.concat(all_prices).sort_index()
+combined_prices = combined_prices[~combined_prices.index.duplicated(keep='first')]
 
-print(type(prices))
-print(prices.head())
-
-
-# =============================
-# PANDAS → POLARS
-# =============================
-df_pd = prices.reset_index()
+# 2. Von Pandas zu Polars konvertieren
+df_pd = combined_prices.reset_index()
 df_pd.columns = ["timestamp", "price_eur_mwh"]
-
 df = pl.from_pandas(df_pd)
 
-
-# =============================
-# BASELOAD (TAGESMITTEL)
-# =============================
+# 3. Baseload berechnen (Tagesmittelwert)
+# Wir extrahieren das Datum und gruppieren danach
 df_daily = (
-    df.group_by(pl.col("timestamp").dt.date())
+    df.with_columns(pl.col("timestamp").dt.date().alias("date"))
+    .group_by("date")
     .agg(pl.col("price_eur_mwh").mean().alias("swissix_base"))
-    .sort("timestamp")
+    .sort("date")
 )
-
-print(df_daily.head())
-
 
 # =============================
 # SPEICHERN
 # =============================
-output = Path("data/raw/prices/swissix_prices_ch.csv")
-output.parent.mkdir(parents=True, exist_ok=True)
+output_path = Path("data/raw/prices/swissix_prices_ch.csv")
+output_path.parent.mkdir(parents=True, exist_ok=True)
 
-df_daily.write_csv(output)
+df_daily.write_csv(output_path)
 
-print(f"\nDatei gespeichert unter: {output}")
->>>>>>> Stashed changes
+print("-" * 30)
+print(f"✅ Download abgeschlossen!")
+print(f"📊 Datensätze gesamt: {len(df_daily)}")
+print(f"💾 Datei gespeichert unter: {output_path}")
+print(df_daily.head())
