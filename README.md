@@ -1,42 +1,50 @@
+
 # SmartHeat-Optimizer  
-**HEAPO: HeatPump-Insights 🌡️⚡**
+**HEAPO – HeatPump Insights 🌡️⚡**
 
-Der SmartHeat-Optimizer ist eine Pipeline zur **Analyse realer Wärmepumpen-Feldstudiendaten**.  
-Das Projekt integriert Smart-Meter-Zeitreihen, Gebäudemetadaten, Anlageninformationen und Wetterdaten, um Leistungskennzahlen wie Effizienz und Betriebsmuster systematisch auszuwerten.
+Der SmartHeat-Optimizer ist eine strukturierte Datenpipeline zur **Analyse realer Wärmepumpen-Feldstudiendaten**.  
+Das Projekt integriert Smart-Meter-Messungen, Gebäudeeigenschaften, Anlageninformationen und externe Datenquellen, um Effizienz, Betriebsverhalten und Optimierungspotenziale datengetrieben zu untersuchen.
 
-Ziel ist es, reproduzierbare Datenprozesse bereitzustellen – von Rohdaten bis zu analysefertigen Features.
+Der Aufbau orientiert sich am **CRISP-DM-Prozess** und trennt klar zwischen Business-Verständnis, Datenaufbereitung, Engineering und Analyse.
 
 ---
 
 ## 🎯 Projektziele
 
-- Vereinheitlichung heterogener Datenquellen  
-- Robuste & nachvollziehbare Join-Strategien  
-- Schnelle Verarbeitung großer Zeitreihen  
-- Bereitstellung einer Basis für statistische Analysen & ML  
-- Transparente Exploration über Notebooks
+- Zusammenführung heterogener Energie- und Gebäudedaten  
+- Reproduzierbare Datenpipelines statt manueller Notebook-Logik  
+- Skalierbare Verarbeitung großer Zeitreihen  
+- Bereitstellung analysefertiger Features  
+- Transparente explorative Auswertung
 
 ---
 
-## 📂 Projektstruktur
+## 🧭 Projektstruktur
 
 ```text
 SmartHeat-Optimizer/
-├── 01_business_understanding/        # Kontext, Notizen, Projektverständnis
-├── data/
-│   ├── raw/                          # Originaldaten (CSV, unverändert)
-│   └── processed/                    # Bereinigte & gemergte Daten
-├── notebooks/
+├── 01_business_understanding/
+│   ├── project_charter.md
+│   └── success_criteria.md
+│
+├── 02_data/
+│   ├── raw/                # Unveränderte Originaldaten
+│   ├── processed/          # Pipeline-Output
+│   └── temp/               # Zwischenergebnisse
+│
+├── 03_src/
+│   ├── __init__.py
+│   ├── app.py              # Startpunkt der Datenpipeline
+│   ├── data_loader.py      # Einlesen & Typisierung
+│   ├── data_combine.py     # Join- & Integrationslogik
+│   ├── data_scrap.py       # Ergänzende Datenquellen / Scraping
+│   ├── features.py         # Feature Engineering
+│   └── utils.py            # Hilfsfunktionen
+│
+├── 04_notebooks/
 │   ├── explorative_analyse_univariat.ipynb
 │   └── explorative_analyse_bivariat.ipynb
-├── src/
-│   ├── __init__.py
-│   ├── app.py                        # Einstiegspunkt der Pipeline
-│   ├── data_loader.py                # Laden & Typisieren der Rohdaten
-│   ├── data_combine.py               # Merge- und Integrationslogik
-│   ├── data_scrap.py                 # Aufbereitung zusätzlicher Infos
-│   ├── features.py                   # Feature Engineering
-│   └── utils.py                      # Hilfsfunktionen
+│
 ├── .env
 ├── .gitignore
 ├── requirements.txt
