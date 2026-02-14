@@ -1,11 +1,15 @@
+
 # Datenanalyse & Manipulation
+polars>=1.0.0
+# NumPy auf < 2.0 begrenzen, um Kompatibilität mit numba/ydata-profiling zu garantieren
+numpy>=1.23.5,<2.0.0
 pandas
-numpy
 
 # Visualisierung
 matplotlib
 seaborn
 plotly
+ydata_profiling
 
 # Machine Learning
 scikit-learn
@@ -14,9 +18,7 @@ scikit-learn
 ipykernel
 notebook
 
-# Utilities
+# Utilities & Scraping
 tqdm
 python-dotenv
-
-selenium 
-tqdm
+selenium

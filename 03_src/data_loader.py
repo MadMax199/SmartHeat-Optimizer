@@ -1,5 +1,5 @@
 
-
+import glob
 import polars as pl
 import os
 
@@ -54,14 +54,24 @@ def smartmeter_load(data_path: str = None):
         print(f"Fehler Smartmeter: {e}")
         return pl.DataFrame()
     
+import os
+import polars as pl
+import glob
+
 def weather_load(data_path: str = None):
     if data_path is None: return pl.DataFrame()
-    search_pattern = os.path.join(data_path, "[0-9]*.csv")
+    
+    # 1. Alle CSV-Dateien explizit als Liste sammeln
+    files = glob.glob(os.path.join(data_path, "*.csv"))
+    if not files:
+        print(f"⚠️ Keine Wetter-Dateien in {data_path} gefunden!")
+        return pl.DataFrame()
 
     try:
+        # 2. Die Liste 'files' an scan_csv übergeben statt nur den Ordnerpfad
         df_lazy = (
             pl.scan_csv(
-                search_pattern,
+                files,              # <-- Wichtig: Hier muss die Liste der Dateien rein
                 separator=";",
                 infer_schema_length=0,
                 ignore_errors=True,
@@ -76,6 +86,7 @@ def weather_load(data_path: str = None):
                     .dt.convert_time_zone("Europe/Zurich")
                     .alias("timestamp_local"),
                 
+                # Numerische Spalten sicher konvertieren
                 pl.col("Temperature_max_daily").cast(pl.Float64, strict=False).alias("temperature_max_daily"),
                 pl.col("Temperature_min_daily").cast(pl.Float64, strict=False).alias("temperature_min_daily"),
                 pl.col("Temperature_avg_daily").cast(pl.Float64, strict=False).alias("temperature_avg_daily"),
@@ -91,9 +102,11 @@ def weather_load(data_path: str = None):
             ])
         )
 
+        # 3. Ausführen und einsammeln
         df = df_lazy.collect()
         if df.is_empty(): return pl.DataFrame()
 
+        # Finales Select und Sortierung
         return df.select([
             "date", "weather_id", "temperature_avg_daily", "temperature_max_daily",
             "temperature_min_daily", "heatingdegree_sia_daily", "heatingdegree_us_daily",
