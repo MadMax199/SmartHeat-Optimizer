@@ -49,18 +49,3 @@ Der HEAPO-Datensatz wurde entwickelt, um folgende Forschungsfragen zu beantworte
 3. **Optimierung:** Quantifizierung von Energieeinsparungen durch manuelle Anpassung der Reglereinstellungen.
 
 ---
-
-### Zitierweise (BibTeX)
-
-Wenn du diesen Datensatz in einer wissenschaftlichen Arbeit oder einem Bericht verwendest, nutze bitte folgende Zitation:
-
-```text
-@dataset{brudermueller_2025_heapo,
-  author       = {Brudermüller, T. and others},
-  title        = {HEAPO – An Open Dataset for Heat Pump Optimization},
-  month        = jan,
-  year         = 2025,
-  publisher    = {Zenodo},
-  doi          = {10.5281/zenodo.15056919},
-  url          = {[https://doi.org/10.5281/zenodo.15056919](https://doi.org/10.5281/zenodo.15056919)}
-}
