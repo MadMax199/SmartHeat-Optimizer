@@ -2,6 +2,8 @@
 # SmartHeat-Optimizer  
 **HEAPO – HeatPump Insights 🌡️⚡**
 
+Datenbasis: Dieses Projekt nutzt den HEAPO-Datensatz (Zenodo 15056919). Brudermüller, T., et al. (2025). HEAPO – An Open Dataset for Heat Pump Optimization.
+
 Der SmartHeat-Optimizer ist eine strukturierte Datenpipeline zur **Analyse realer Wärmepumpen-Feldstudiendaten**.  
 Das Projekt integriert Smart-Meter-Messungen, Gebäudeeigenschaften, Anlageninformationen und externe Datenquellen, um Effizienz, Betriebsverhalten und Optimierungspotenziale datengetrieben zu untersuchen.
 

@@ -6,15 +6,15 @@ Dieses Dokument definiert die messbaren Erfolgskriterien für das Analyseprojekt
 ## Phasenspezifische Erfolgskriterien
 
 ### Phase 1: Geschäftsverständnis
-- [ ] Projektcharta erstellt und genehmigt
-- [ ] Klare Problemstellung dokumentiert
-- [ ] Erfolgsmetriken definiert
-- [ ] Stakeholder-Anforderungen erhoben
+- [X] Projektcharta erstellt und genehmigt
+- [X] Klare Problemstellung dokumentiert
+- [X] Erfolgsmetriken definiert
+- [X] Stakeholder-Anforderungen erhoben
 
 ### Phase 2: Datenanschaffung
-- [] Datensatz erfolgreich heruntergeladen
-- [] Datenquelle mit Metadaten dokumentiert
-- [] Datenwörterbuch erstellt
+- [x] Datensatz erfolgreich heruntergeladen
+- [X] Datenquelle mit Metadaten dokumentiert
+- [X] Datenwörterbuch erstellt
 
 ### Phase 3: Datenvorbereitung
 - [] Erste Datenqualitätsbewertung durchgeführt
