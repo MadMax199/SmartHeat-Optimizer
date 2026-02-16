@@ -17,8 +17,8 @@ Dieses Dokument definiert die messbaren Erfolgskriterien für das Analyseprojekt
 - [X] Datenwörterbuch erstellt
 
 ### Phase 3: Datenvorbereitung
-- [] Erste Datenqualitätsbewertung durchgeführt
-- [] Strategie zur Behandlung fehlender Werte implementiert
+- [x] Erste Datenqualitätsbewertung durchgeführt
+- [x] Strategie zur Behandlung fehlender Werte implementiert
 - [] Ausreißererkennung und -behandlung durchgeführt
 - [] Datenvalidierungsregeln angewendet
 - [] Bereinigter Datensatz analysefertig
@@ -42,7 +42,7 @@ Dieses Dokument definiert die messbaren Erfolgskriterien für das Analyseprojekt
 - [] Mehrere Algorithmen getestet (mindestens 3)
 - [] Hyperparameter-Tuning durchgeführt
 - [] Bestes Modell anhand von Metriken ausgewählt
--  ] Modellannahmen validiert
+- [] Modellannahmen validiert
 - [] Trainingsprozess dokumentiert
 
 ### Phase 7: Evaluation
