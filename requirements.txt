@@ -4,7 +4,7 @@ polars>=1.0.0
 # NumPy auf < 2.0 begrenzen, um Kompatibilität mit numba/ydata-profiling zu garantieren
 numpy>=1.23.5,<2.0.0
 pandas
-
+pandera
 # Visualisierung
 matplotlib
 seaborn

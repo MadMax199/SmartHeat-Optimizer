@@ -11,7 +11,7 @@ sys.path.append(str(current_dir))
 
 from data_combine import join_data 
 from data_loader import smartmeter_load, household_load, house_info_load, weather_load
-from data_cleaner import fill_false, fill_null,fill_median, apply_interpolation, apply_carry_over
+from data_cleaner import fill_false, fill_null,fill_median, apply_interpolation, detect_outliers
 
 paths = {
     "households": str(root_dir / "02_data" / "raw" / "households"),
@@ -40,25 +40,32 @@ data_combined = join_data(
     join_ids4=['household_id'], 
     join_how4='left',
 )
+
+
 data_combined = (
     data_combined
-    .pipe(fill_false, ["installation_haspvsystem", "heatpump_installation_internetconnection","heatpump_installation_internetconnection"
-                       ,"building_renovated_windows","building_renovated_roof", "building_renovated_walls","building_renovated_floor"])
-    .pipe(fill_null, ["kwh_returned_total","building_floorareaheated_basement","building_floorareaheated_topfloor",
-                      "building_floorareaheated_secondfloor","building_floorareaheated_additionalareasplannedsize"])
-    .pipe(fill_median, ["building_constructionyear", "building_residents"], group_by_col="building_type")
-    .pipe(apply_interpolation, ["temperature_avg_daily","kwh_received_total"])
-    .pipe(apply_carry_over, 
-          target_col="heatpump_heatingcurvesetting_outside20_aftervisit", 
-          source_col="heatpump_heatingcurvesetting_outside20_beforevisit")
-    .pipe(apply_carry_over, 
-          target_col="heatpump_heatingcurvesetting_outside0_aftervisit", 
-          source_col="heatpump_heatingcurvesetting_outside0_beforevisit")
-    .pipe(apply_carry_over, 
-          target_col="heatpump_heatingcurvesetting_outsideminus8_aftervisit", 
-          source_col="heatpump_heatingcurvesetting_outsideminus8_beforevisit")
+    .with_columns(pl.col("building_type").fill_null("unknown"))
+    .sort(["household_id", "timestamp_local"])
+    .pipe(fill_false, [
+        "installation_haspvsystem", 
+        "heatpump_installation_internetconnection",
+        "building_renovated_windows",
+        "building_renovated_roof", 
+        "building_renovated_walls",
+        "building_renovated_floor"
+    ])
+    .pipe(fill_null, [
+        "kwh_returned_total",
+        "building_floorareaheated_basement",
+        "building_floorareaheated_topfloor",
+        "building_floorareaheated_secondfloor",
+        "building_floorareaheated_additionalareasplannedsize"
+    ])
+    .pipe(fill_median, ["building_constructionyear", "building_residents"], group_by_col="building_type")    
+    .pipe(apply_interpolation, ["temperature_avg_daily", "kwh_received_total"])
 )
 
-output_path = root_dir / "data" / "temp" / "combined_data.csv"
+
+output_path = root_dir / "02_data" / "temp" / "combined_data.csv"
 output_path.parent.mkdir(parents=True, exist_ok=True)
 data_combined.write_csv(str(output_path), separator=";")

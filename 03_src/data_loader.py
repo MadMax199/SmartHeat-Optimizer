@@ -160,7 +160,7 @@ def house_info_load(data_path: str = None):
     ])
 
 
-def processed_data_load(file_path: str):
+def temp_data_load(data_path: str):
     """
     Lädt den bereits kombinierten und bereinigten Datensatz aus dem processed-Ordner.
     """
@@ -168,15 +168,15 @@ def processed_data_load(file_path: str):
         # Wir nutzen infer_schema_length=10000, damit Polars die 
         # Datentypen (Float, Int, String) nach dem Join wieder korrekt erkennt.
         df = pl.read_csv(
-            file_path,
+            data_path,
             separator=";",
             infer_schema_length=10000,
             ignore_errors=True
         )
         
-        print(f"✅ Processed Data geladen: {df.shape[0]} Zeilen, {df.shape[1]} Spalten.")
+        print(f"✅ Temp Data geladen: {df.shape[0]} Zeilen, {df.shape[1]} Spalten.")
         return df
 
     except Exception as e:
-        print(f"❌ Fehler beim Laden der Processed Data: {e}")
+        print(f"❌ Fehler beim Laden der Temps Data: {e}")
         return pl.DataFrame()

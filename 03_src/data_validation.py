@@ -1,0 +1,151 @@
+import polars as pl
+import polars.selectors as cs
+import pandera
+
+def double_numbers(df:
+
+    df_doubles = (df.filter(df.is_duplicated(
+    anzahl = df_doubles.height
+
+    print(f"Anzahl der Zeilen die Duplikate sind: {anzahl}"
+    
+    return anzahl
+
+
+
+class Schema(pa.DataFrameModel):
+        timestamp String
+        timestamp_local String
+        date String
+        household_id Int64
+        group_assignment String
+        affects_timepoint String
+        kwh_received_total Float64
+        kwh_received_heatpump String
+        kwh_received_other String
+         kwh_returned_total Float64
+        group String
+        weather_id String
+        installation_haspvsystem Boolean
+        protocols_available Boolean
+        protocols_hasmultiplevisits Boolean
+        protocols_reportids String
+        metadata_available Boolean
+        smartmeterdata_available_15min Boolean
+        smartmeterdata_available_daily Boolean
+        smartmeterdata_available_monthly Boolean
+        temperature_avg_daily Float64
+        temperature_max_daily Float64
+        temperature_min_daily Float64
+        heatingdegree_sia_daily Float64
+        heatingdegree_us_daily Float64
+        coolingdegree_us_daily Float64
+        humidity_avg_daily Float64
+        precipitation_total_daily Float64
+        sunshine_duration_daily Float64
+        timestamp_local_right String
+        report_id Int64
+        visit_year String
+        visit_date String
+        building_type String
+        building_housingunits Float64
+        building_constructionyear Float64
+        building_constructionyear_interval String
+        building_renovated_windows Boolean
+        building_renovated_roof Boolean
+        building_renovated_walls Boolean
+        building_renovated_floor Boolean
+        building_floorareaheated_total Float64
+        building_floorareaheated_basement Float64
+        building_floorareaheated_groundfloor Float64
+        building_floorareaheated_firstfloor String
+        building_floorareaheated_secondfloor Float64
+        building_floorareaheated_topfloor Float64
+        building_floorareaheated_additionalareasplanned Boolean
+        building_floorareaheated_additionalareasplannedsize Float64
+        building_residents Float64
+        building_pvsystem_available Boolean
+        building_pvsystem_size String
+        building_electricvehicle_available String
+        heatpump_installation_type String
+        heatpump_installation_year String
+        heatpump_installation_manufacturer String
+        heatpump_installation_model String
+        heatpump_installation_heatingcapacity Float64
+        heatpump_installation_refrigerant_type String
+        heatpump_installation_refrigerant_content Float64
+        heatpump_installation_normpoint String
+        heatpump_installation_normpoint_cop Float64
+        heatpump_installation_normpoint_electricpower Float64
+        heatpump_installation_normpoint_heatingpower Float64
+        heatpump_installation_location String
+        heatpump_installation_internetconnection Boolean
+        heatpump_installation_controllernotaccessible Float64
+        heatdistribution_system_radiators Boolean
+        heatdistribution_system_floorheating Boolean
+        heatdistribution_system_thermostaticvalve Boolean
+        heatdistribution_system_buffertankavailable Boolean
+        dhw_production_byheatpump Boolean
+        dhw_production_byelectricwaterheater Boolean
+        dhw_production_bysolar Boolean
+        dhw_production_byheatpumpboiler Boolean
+        dhw_byheatpump_timeinterval String
+        dhw_production_typeofheating String
+        dhw_production_residents Int64
+        dhw_circulation_notinuse Boolean
+        dhw_circulation_bytraceheating Boolean
+        dhw_circulation_bycirculationpump Boolean
+        dhw_circulation_switchedbytimer Boolean
+        dhw_sterilization_available String
+        dhw_sterilization_active String
+        heatpump_clean Boolean
+        heatpump_basicfunctionsokay Boolean
+        heatpump_technicallyokay Boolean
+        heatpump_electricityconsumption_yearlyestimated Float64
+        heatpump_electricityconsumption_categorization String
+        heatpump_installation_correctlyplanned Boolean
+        heatpump_installation_incorrectlyplanned_categorization String
+        heatpump_airsource_airductsdistanceokay String
+        heatpump_airsource_airductsfree String
+        heatpump_airsource_airductscleaningrequired String
+        heatpump_airsource_airductsdrainokay String
+        heatpump_airsource_evaporatorclean String
+        heatpump_groundsource_brinecircuit_length String
+        heatpump_groundsource_brinecircuit_depth String
+        heatpump_groundsource_brinecircuit_numberofholes String
+        heatpump_groundsource_brinecircuit_coolingcapacity String
+        heatpump_groundsource_brinecircuit_antifreezeexists Boolean
+        heatpump_groundsource_currentpressure Float64
+        heatpump_groundsource_currentpressure_okay Boolean
+        heatpump_groundsource_currenttemperature Float64
+        heatpump_groundsource_currenttemperature_okay Boolean
+        heatpump_heatingcurvesetting_toohigh_beforevisit Boolean
+        heatpump_heatingcurvesetting_changed Boolean
+        heatpump_heatingcurvesetting_outside20_beforevisit Float64
+        heatpump_heatingcurvesetting_outside0_beforevisit Float64
+        heatpump_heatingcurvesetting_outsideminus8_beforevisit Float64
+        heatpump_heatingcurvesetting_outside20_aftervisit Float64
+        heatpump_heatingcurvesetting_outside0_aftervisit Float64
+        heatpump_heatingcurvesetting_outsideminus8_aftervisit Float64
+        heatpump_heatinglimitsetting_toohigh_beforevisit String
+        heatpump_heatinglimitsetting_changed String
+        heatpump_heatinglimitsetting_beforevisit String
+        heatpump_heatinglimitsetting_aftervisit String
+        heatpump_nightsetbacksetting_activated_beforevisit Boolean
+        heatpump_nightsetbacksetting_activated_aftervisit Boolean
+        dhw_temperaturesetting_categorization String
+        dhw_temperaturesetting_changed Boolean
+        dhw_temperaturesetting_beforevisit String
+        dhw_temperaturesetting_aftervisit String
+        dhw_storage_lastdescaling_toolongago Boolean
+        dhw_storage_lastdescaling_year String
+        heatdistribution_expansiontank_pressure_categorization String
+        heatdistribution_expansiontank_pressure_actual String
+        heatdistribution_expansiontank_pressure_target String
+        heatdistribution_expansiontank_systemheight Float64
+        heatdistribution_circulation_pumpstageposition_changed String
+        heatdistribution_circulation_pumpstageposition_beforevisit String
+        heatdistribution_circulation_pumpstageposition_aftervisit String
+        heatdistribution_recommendation_insulatepipes Boolean
+        heatdistribution_recommendation_installthermostaticvalve Boolean
+        heatdistribution_recommendation_installrpmvalve Boolean]

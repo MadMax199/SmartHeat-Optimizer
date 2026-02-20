@@ -19,7 +19,7 @@ Dieses Dokument definiert die messbaren Erfolgskriterien für das Analyseprojekt
 ### Phase 3: Datenvorbereitung
 - [x] Erste Datenqualitätsbewertung durchgeführt
 - [x] Strategie zur Behandlung fehlender Werte implementiert
-- [] Ausreißererkennung und -behandlung durchgeführt
+- [x] Ausreißererkennung und -behandlung durchgeführt
 - [] Datenvalidierungsregeln angewendet
 - [] Bereinigter Datensatz analysefertig
 - [] Datenqualitätsbericht erstellt / Dokumentieren und auch in der Arbeit darstellen
