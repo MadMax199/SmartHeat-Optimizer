@@ -20,9 +20,9 @@ Dieses Dokument definiert die messbaren Erfolgskriterien für das Analyseprojekt
 - [x] Erste Datenqualitätsbewertung durchgeführt
 - [x] Strategie zur Behandlung fehlender Werte implementiert
 - [x] Ausreißererkennung und -behandlung durchgeführt
-- [] Datenvalidierungsregeln angewendet
-- [] Bereinigter Datensatz analysefertig
-- [] Datenqualitätsbericht erstellt / Dokumentieren und auch in der Arbeit darstellen
+- [x] Datenvalidierungsregeln angewendet
+- [X] Bereinigter Datensatz analysefertig
+- [X] Datenqualitätsbericht erstellt / Dokumentieren und auch in der Arbeit darstellen
 
 ### Phase 4: Explorative Datenanalyse
 - [] Univariate Analyse für alle Features durchgeführt

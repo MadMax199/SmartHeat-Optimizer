@@ -1,13 +1,14 @@
 import polars as pl
 import polars.selectors as cs
-import pandera
+import pandera.polars as pa
 
 def double_numbers(df):
 
-    df_doubles = (df.filter(df.is_duplicated(
+    df_doubles = df.filter(df.is_duplicated())
     anzahl = df_doubles.height
 
     print(f"Anzahl der Zeilen die Duplikate sind: {anzahl}")
+    return anzahl
           
 
 
@@ -77,18 +78,26 @@ def detect_outliers(df: pl.DataFrame, method='iqr', top_n=10):
 
 def check_data_quality(df, schema):
     try:
-        validated_df = schema_class.validate(df.lazy()).collect()
+        # 'lazy=True' sorgt dafür, dass Pandera alle Fehler sammelt,
+        # anstatt beim ersten Fehler sofort abzubrechen.
+        validated_df = schema.validate(df.lazy(), lazy=True).collect()
         print("✅ Validierung erfolgreich: Der Dataframe entspricht dem Schema!")
         return validated_df
     
     except pa.errors.SchemaErrors as err:
         print("❌ Validierung fehlgeschlagen!")
         
-       
         failure_report = err.failure_cases
         
-        print(f"\nAnzahl gefundener Fehler: {len(failure_report)}")
-        print("\nErste Fehler im Detail:")
-        print(failure_report.head(15))
-        
+        # Polars Einstellungen temporär anpassen, damit alles geprinted wird
+        with pl.Config(
+            tbl_rows=-1,          # Alle Zeilen anzeigen
+            tbl_cols=-1,          # Alle Spalten anzeigen
+            fmt_str_lengths=100,  # Lange Texte in Zellen nicht abschneiden
+            tbl_width_chars=1000  # Zeilenumbruch im Terminal verhindern
+        ):
+            print("\n--- VOLLSTÄNDIGER FEHLER-REPORT ---")
+            # Wir wählen die wichtigsten Spalten für die Übersicht
+            print(failure_report.select(["column", "check", "failure_case", "index"]))
+            
         return failure_report

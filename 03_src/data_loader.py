@@ -180,3 +180,20 @@ def temp_data_load(data_path: str):
     except Exception as e:
         print(f"❌ Fehler beim Laden der Temps Data: {e}")
         return pl.DataFrame()
+  
+def processed_data_load(data_path: str):
+        """
+        Lädt den bereinigten Datensatz im Parquet-Format.
+        """
+        try:
+            # WICHTIG: read_parquet statt read_csv verwenden!
+            df = pl.read_parquet(data_path)
+            
+            print(f"✅ Processed Data geladen: {df.shape[0]} Zeilen, {df.shape[1]} Spalten.")
+            return df
+
+        except Exception as e:
+            # Hier habe ich die Fehlermeldung präzisiert
+            print(f"❌ Fehler beim Laden der Parquet-Datei: {e}")
+            print("Hinweis: Prüfe, ob der Dateipfad wirklich auf eine .parquet Datei zeigt.")
+            return pl.DataFrame()

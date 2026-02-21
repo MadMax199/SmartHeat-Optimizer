@@ -6,10 +6,14 @@ import polars.selectors as cs
 #1. Strategie: Auffüllen mit False (Boolean) Wird verwendet, wenn das Fehlen eines Eintrags logisch als "nicht vorhanden" interpretiert werden kann.
 #installation_haspvsystem, building_renovated_...,heatpump_installation_internetconnection
 
-
 def fill_false(df: pl.DataFrame, cols: list[str]) -> pl.DataFrame:
-
-    return df.with_columns(pl.col(cols).cast(pl.Boolean).fill_null(False))
+    """
+    Die ursprüngliche, einfache Version: 
+    Casted direkt zu Boolean und füllt Nullwerte mit False.
+    """
+    return df.with_columns(
+        pl.col(cols).cast(pl.Boolean).fill_null(False)
+    )
 
 
 #2. Strategie: Auffüllen mit 0 (Null)
@@ -66,3 +70,39 @@ def apply_carry_over(df: pl.DataFrame, target_col: str, source_col: str) -> pl.D
     return df.with_columns(
         pl.coalesce([pl.col(target_col), pl.col(source_col)]).alias(target_col)
     )
+
+#6. Funktion um aus string datimetime zu machen
+
+def apply_string_to_datetime(df, cols, tz="Europe/Zurich"): # <--- tz muss hier stehen!
+    return df.with_columns(
+        pl.col(cols)
+        .cast(pl.Datetime)
+        .dt.replace_time_zone(None)
+        .dt.replace_time_zone(tz)
+    )
+
+
+#7. Funktion um aus string date zu machen
+
+def apply_string_to_date(df: pl.DataFrame, cols: list[str]) -> pl.DataFrame:
+
+    return df.with_columns(pl.col(cols).cast(pl.Date))
+
+#8. Funktion um aus string float zu machen
+
+def apply_string_to_float(df: pl.DataFrame, cols: list[str]) -> pl.DataFrame:
+
+    return df.with_columns(pl.col(cols).cast(pl.Float64))
+
+#8. Funktion um aus string boolean zu machen
+
+def apply_string_to_boolean(df: pl.DataFrame, cols: list[str]) -> pl.DataFrame:
+
+    return df.with_columns(pl.col(cols).cast(pl.Boolean))
+
+#9. Funktion um aus string integer zu machen
+
+
+def apply_string_to_integer(df: pl.DataFrame, cols: list[str]) -> pl.DataFrame:
+    # Int64 deckt alle normalen Ganzzahlen ab
+    return df.with_columns(pl.col(cols).cast(pl.Int64))
