@@ -71,6 +71,13 @@ def apply_carry_over(df: pl.DataFrame, target_col: str, source_col: str) -> pl.D
         pl.coalesce([pl.col(target_col), pl.col(source_col)]).alias(target_col)
     )
 
+#6. FUnktion um Label infos mit Unbekannt zu belabeln: 
+
+def apply_unbekannt(df, cols: list[str]) -> pl.DataFrame:
+    return df.with_columns(pl.col(cols).fill_null("Unbekannt"))
+
+
+
 #6. Funktion um aus string datimetime zu machen
 
 def apply_string_to_datetime(df, cols, tz="Europe/Zurich"): # <--- tz muss hier stehen!

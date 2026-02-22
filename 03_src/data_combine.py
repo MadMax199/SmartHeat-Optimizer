@@ -3,13 +3,22 @@ import polars as pl
 import os
 import glob
 
-def join_data(df1, join_ids: list, join_how:str ,df2, join_ids2: list,  join_how2:str ,df3, join_ids3: list, join_how3:str , df4, join_ids4: list, join_how4:str):
+# Angepasste join_data-Funktion
+def join_data(base_df, joins: list):
+    """
+    Führt mehrere Joins sequenziell aus.
+    Unterstützt gleiche Spaltennamen (on) oder unterschiedliche (left_on / right_on).
+    """
+    df = base_df
 
-
-    df = df1.join(df2, on=join_ids, how="left", coalesce=True)
-
-    df = df.join(df3,  on=join_ids3, how="left", coalesce=True)
-    
-    df = df.join(df4,  on=join_ids4, how="left", coalesce=True)
+    for join in joins:
+        df = df.join(
+            join["df"],
+            on=join.get("on"),                  # gleiche Spaltennamen
+            left_on=join.get("left_on"),        # linke Spaltennamen, falls unterschiedlich
+            right_on=join.get("right_on"),      # rechte Spaltennamen, falls unterschiedlich
+            how=join.get("how", "left"),
+            coalesce=True
+        )
 
     return df

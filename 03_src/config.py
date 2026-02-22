@@ -8,6 +8,99 @@ import polars as pl
 import polars as pl
 import pandera.polars as pa
 
+fill_false_list = [
+                    "building_pvsystem_available",
+                    "installation_haspvsystem",
+                    "heatpump_installation_internetconnection",
+                    "building_renovated_windows",
+                    "building_renovated_roof",
+                    "building_renovated_walls",
+                    "building_renovated_floor",
+                    "building_electricvehicle_available",
+                    "smartmeterdata_available_15min", 
+                    "smartmeterdata_available_daily",
+                    'heatdistribution_system_radiators', 
+                    'heatdistribution_system_floorheating', 'heatdistribution_system_thermostaticvalve', 
+                    'heatdistribution_system_buffertankavailable', 'dhw_production_byheatpump', 
+                    'dhw_production_byelectricwaterheater', 'dhw_production_bysolar', 
+                    'dhw_production_byheatpumpboiler', 'dhw_circulation_notinuse', 
+                    'dhw_circulation_bytraceheating', 'dhw_circulation_bycirculationpump', 
+                    'dhw_circulation_switchedbytimer', 'dhw_sterilization_available', 
+                    'dhw_sterilization_active', 'heatpump_clean', 'heatpump_basicfunctionsokay', 
+                    'heatpump_technicallyokay', 'heatpump_installation_correctlyplanned', 
+                    'heatpump_airsource_airductsdistanceokay', 'heatpump_airsource_airductsfree', 
+                    'heatpump_airsource_airductscleaningrequired', 'heatpump_airsource_airductsdrainokay', 
+                    'heatpump_airsource_evaporatorclean', 'heatpump_groundsource_brinecircuit_antifreezeexists', 
+                    'heatpump_groundsource_currentpressure_okay', 'heatpump_groundsource_currenttemperature_okay', 
+                    'heatpump_heatingcurvesetting_toohigh_beforevisit', 'heatpump_heatingcurvesetting_changed', 
+                    'heatpump_heatinglimitsetting_toohigh_beforevisit', 'heatpump_heatinglimitsetting_changed', 
+                    'heatpump_nightsetbacksetting_activated_beforevisit', 'heatpump_nightsetbacksetting_activated_aftervisit', 
+                    'dhw_temperaturesetting_changed', 'dhw_storage_lastdescaling_toolongago', 
+                    'heatdistribution_circulation_pumpstageposition_changed', 'heatdistribution_recommendation_insulatepipes', 
+                    'heatdistribution_recommendation_installthermostaticvalve', 'heatdistribution_recommendation_installrpmvalve',
+                    'building_floorareaheated_additionalareasplanned']
+fill_null_list =  [
+        "kwh_returned_total",
+        "building_floorareaheated_basement",
+        "building_floorareaheated_topfloor",
+        "building_floorareaheated_secondfloor",
+
+    ]
+fill_median_list = ["building_constructionyear", "building_residents"]
+
+fill_inter_list = ["temperature_avg_daily", "kwh_received_total"]
+
+
+fill_string_float = [
+        "heatpump_installation_normpoint_heatingpower",
+        "heatpump_groundsource_brinecircuit_length",
+        "heatpump_groundsource_brinecircuit_depth",
+        "heatpump_groundsource_brinecircuit_numberofholes",
+        "heatpump_groundsource_brinecircuit_coolingcapacity",
+        "dhw_temperaturesetting_beforevisit",
+        "dhw_temperaturesetting_aftervisit",
+            "heatdistribution_expansiontank_pressure_actual",
+        "heatdistribution_expansiontank_pressure_target"
+    ]
+fill_string_boolean = [
+        "building_electricvehicle_available",
+        "dhw_sterilization_available",
+        "dhw_sterilization_active",
+        "heatpump_airsource_airductsdistanceokay",
+        "heatpump_airsource_airductsfree",
+        "heatpump_airsource_airductscleaningrequired",
+        "heatpump_airsource_airductsdrainokay",
+        "heatpump_airsource_evaporatorclean",
+        "heatpump_heatinglimitsetting_toohigh_beforevisit",
+        "heatpump_heatinglimitsetting_changed",
+        "heatdistribution_circulation_pumpstageposition_changed",
+        "heatpump_installation_controllernotaccessible"
+    ]
+fill_string_integer =  [
+        "visit_year",
+        "dhw_storage_lastdescaling_year",
+        "heatpump_installation_year",
+        "building_constructionyear",
+        "dhw_temperaturesetting_aftervisit",
+        "heatdistribution_circulation_pumpstageposition_beforevisit",
+        "heatdistribution_circulation_pumpstageposition_aftervisit",
+        "heatpump_heatinglimitsetting_beforevisit",
+        "heatpump_heatinglimitsetting_aftervisit"
+    ]
+
+
+fill_unbekannt_list = [ 
+    'building_type', 'building_constructionyear_interval', 'heatpump_installation_type', 
+    'heatpump_installation_manufacturer', 'heatpump_installation_model', 
+    'heatpump_installation_refrigerant_type', 
+    'heatpump_installation_location', 
+    'dhw_byheatpump_timeinterval', 'dhw_production_typeofheating', 
+    'heatpump_electricityconsumption_categorization', 'heatpump_installation_incorrectlyplanned_categorization', 
+    'dhw_temperaturesetting_categorization', 'heatdistribution_expansiontank_pressure_categorization'
+]
+
+
+
 class Schema(pa.DataFrameModel):
     # Hier müssen die echten Spaltennamen aus deinem Dataframe stehen:
     timestamp: pl.Datetime(time_unit="us", time_zone="UTC")
@@ -76,7 +169,7 @@ class Schema(pa.DataFrameModel):
     heatpump_installation_normpoint_heatingpower: pl.Float64
     heatpump_installation_location: pl.String
     heatpump_installation_internetconnection: pl.Boolean
-    heatpump_installation_controllernotaccessible: pl.Float64
+    heatpump_installation_controllernotaccessible: pl.Boolean
     heatdistribution_system_radiators: pl.Boolean
     heatdistribution_system_floorheating: pl.Boolean
     heatdistribution_system_thermostaticvalve: pl.Boolean
@@ -136,8 +229,8 @@ class Schema(pa.DataFrameModel):
     dhw_storage_lastdescaling_toolongago: pl.Boolean
     dhw_storage_lastdescaling_year: pl.Int64
     heatdistribution_expansiontank_pressure_categorization: pl.String
-    heatdistribution_expansiontank_pressure_actual: pl.Date
-    heatdistribution_expansiontank_pressure_target: pl.Date
+    heatdistribution_expansiontank_pressure_actual: pl.Float64
+    heatdistribution_expansiontank_pressure_target: pl.Float64
     heatdistribution_expansiontank_systemheight: pl.Float64
     heatdistribution_circulation_pumpstageposition_changed: pl.Boolean
     heatdistribution_circulation_pumpstageposition_beforevisit: pl.Int64
@@ -145,3 +238,4 @@ class Schema(pa.DataFrameModel):
     heatdistribution_recommendation_insulatepipes: pl.Boolean
     heatdistribution_recommendation_installthermostaticvalve: pl.Boolean
     heatdistribution_recommendation_installrpmvalve: pl.Boolean
+    swissix_base: pl.Float64

@@ -2,6 +2,7 @@
 import glob
 import polars as pl
 import os
+from pathlib import Path
 
 def smartmeter_load(data_path: str = None):
     "Lädt alle csv Dateien in ein Dataframe"
@@ -39,13 +40,16 @@ def smartmeter_load(data_path: str = None):
         ])
 
         df = df.with_columns([
+            # Lokale Zeit erstellen
             pl.col("timestamp").dt.convert_time_zone("Europe/Zurich").alias("timestamp_local")
         ]).with_columns([
-            pl.col("timestamp_local").dt.date().alias("date")
+            # Datum extrahieren
+            pl.col("timestamp_local").dt.date().alias("date"),
+            # Jahr als Integer extrahieren
+            pl.col("timestamp_local").dt.year().cast(pl.Utf8).alias("year_str")
         ])
-
         return df.select([
-            "timestamp", "timestamp_local", "date", "household_id",
+            "timestamp", "timestamp_local", "date","year_str", "household_id",
             "group_assignment", "affects_timepoint", "kwh_received_total",
             "kwh_received_heatpump", "kwh_received_other", "kwh_returned_total"
         ])
@@ -54,9 +58,6 @@ def smartmeter_load(data_path: str = None):
         print(f"Fehler Smartmeter: {e}")
         return pl.DataFrame()
     
-import os
-import polars as pl
-import glob
 
 def weather_load(data_path: str = None):
     if data_path is None: return pl.DataFrame()
@@ -154,10 +155,42 @@ def house_info_load(data_path: str = None):
 
     return df.with_columns([
         # ID zu String casten
-        pl.col("household_id").cast(pl.String),
-        pl.col("visit_date").str.to_date(format="%d.%m.%Y", strict=False),
-        pl.col("visit_year").cast(pl.String).str.to_date(format="%Y", strict=False)
+        pl.col("household_id").cast(pl.Utf8).alias("household_id_info"),
+        pl.col("visit_date").str.to_date(format="%d.%m.%Y", strict=False).alias("visit_date_date"),
+        pl.col("visit_date").str.to_date(format="%d.%m.%Y", strict=False).dt.year().cast(pl.Utf8).alias("year_str")
+
     ])
+
+def load_price_data(data_path: str):
+    """
+    Lädt alle CSV-Dateien im angegebenen Ordner
+    und kombiniert sie zu einem DataFrame.
+    """
+    try:
+        files = list(Path(data_path).glob("*.csv"))
+        
+        if not files:
+            raise FileNotFoundError("Keine CSV-Dateien im prices-Ordner gefunden.")
+
+        dfs = [
+            pl.read_csv(
+                file,
+                separator=",",
+                infer_schema_length=10000,
+                ignore_errors=True
+            )
+            for file in files
+        ]
+
+        df = pl.concat(dfs)
+        df = df.with_columns(pl.col('date').cast(pl.Date)).with_columns(pl.col('swissix_base').cast(pl.Float64))
+
+        print(f"✅ Price Data geladen: {df.shape[0]} Zeilen, {df.shape[1]} Spalten.")
+        return df
+
+    except Exception as e:
+        print(f"❌ Fehler beim Laden der Price Data: {e}")
+        return pl.DataFrame()
 
 
 def temp_data_load(data_path: str):
