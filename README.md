@@ -1,5 +1,3 @@
-
-# SmartHeat-Optimizer  
 **HEAPO – HeatPump Insights 🌡️⚡**
 
 Datenbasis: Dieses Projekt nutzt den HEAPO-Datensatz (Zenodo 15056919). Brudermüller, T., et al. (2025). HEAPO – An Open Dataset for Heat Pump Optimization.
