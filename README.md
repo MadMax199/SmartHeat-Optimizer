@@ -4,7 +4,7 @@
 
 Datenbasis: Dieses Projekt nutzt den HEAPO-Datensatz (Zenodo 15056919). Brudermüller, T., et al. (2025). HEAPO – An Open Dataset for Heat Pump Optimization.
 
-Der SmartHeat-Optimizer ist eine strukturierte Datenpipeline zur **Analyse realer Wärmepumpen-Feldstudiendaten**.  
+Dieses Repo beinhaltet eine strukturierte Datenpipeline zur **Analyse realer Stromverbrauchsdaten**.  
 Das Projekt integriert Smart-Meter-Messungen, Gebäudeeigenschaften, Anlageninformationen und externe Datenquellen, um Effizienz, Betriebsverhalten und Optimierungspotenziale datengetrieben zu untersuchen.
 
 Der Aufbau orientiert sich am **CRISP-DM-Prozess** und trennt klar zwischen Business-Verständnis, Datenaufbereitung, Engineering und Analyse.
@@ -14,6 +14,7 @@ Der Aufbau orientiert sich am **CRISP-DM-Prozess** und trennt klar zwischen Busi
 ## 🎯 Projektziele
 
 - Zusammenführung heterogener Energie- und Gebäudedaten  
+- Einbindung von Preisdaten um den Einfluss von Preisschocks zu berücksichtigen
 - Reproduzierbare Datenpipelines statt manueller Notebook-Logik  
 - Skalierbare Verarbeitung großer Zeitreihen  
 - Bereitstellung analysefertiger Features  
@@ -27,7 +28,9 @@ Der Aufbau orientiert sich am **CRISP-DM-Prozess** und trennt klar zwischen Busi
 SmartHeat-Optimizer/
 ├── 01_business_understanding/
 │   ├── project_charter.md
-│   └── success_criteria.md
+│   ├── problemstellung.md
+│   ├── datenqualitätsbericht.md
+│   └── success_criteria.md   
 │
 ├── 02_data/
 │   ├── raw/                # Unveränderte Originaldaten
@@ -37,9 +40,12 @@ SmartHeat-Optimizer/
 ├── 03_src/
 │   ├── __init__.py
 │   ├── app.py              # Startpunkt der Datenpipeline
+│   ├── config.py           # Zentrale Config des Projekts 
+│   ├── data_cleaner.py     # FUnktionen zum reinigen der Daten
 │   ├── data_loader.py      # Einlesen & Typisierung
 │   ├── data_combine.py     # Join- & Integrationslogik
 │   ├── data_scrap.py       # Ergänzende Datenquellen / Scraping
+│   ├── data_validation.py  # Check der Datentypen mittels pandera
 │   ├── features.py         # Feature Engineering
 │   └── utils.py            # Hilfsfunktionen
 │
