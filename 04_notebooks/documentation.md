@@ -31,3 +31,4 @@ In der Korrelationsanalyse wird deutlich, dass Häuser ohne sanierte Fenster, Fa
 
 Neben dem Einfluss des Gebäudezustands hat die beheizte Fläche den erwartungsgemäß stärksten positiven Einfluss auf den Verbrauch. Mit jedem Anstieg der Wohnfläche skaliert auch der Energiebedarf, da die zu deckende Transmissionswärmelast linear mit der Gebäudegeometrie wächst.Ergänzend dazu zeigt sich beim Nutzerverhalten ein ähnliches Bild: Eine höhere Anzahl an Bewohnern führt zu einem Anstieg der Grundlast, was primär auf die Warmwasseraufbereitung und den allgemeinen Haushaltsstrom zurückzuführen ist. In der Kombination dieser Faktoren lassen sich so klare Lastprofile ableiten, die als Basis für eine intelligente Steuerung dienen.
 
+![alt text](image-10.png)
