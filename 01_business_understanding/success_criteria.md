@@ -25,8 +25,8 @@ Dieses Dokument definiert die messbaren Erfolgskriterien für das Analyseprojekt
 - [X] Datenqualitätsbericht erstellt / Dokumentieren und auch in der Arbeit darstellen
 
 ### Phase 4: Explorative Datenanalyse
-- [] Univariate Analyse für alle Features durchgeführt
-- [] Bivariate/multivariate Analyse durchgeführt
+- [X] Univariate Analyse für alle Features durchgeführt
+- [X] Bivariate/multivariate Analyse durchgeführt
 - [] Wesentliche Muster und Erkenntnisse dokumentiert
 - [] Visualisierungs-Dashboard erstellt
 - [] Statistische Zusammenfassung erstellt
