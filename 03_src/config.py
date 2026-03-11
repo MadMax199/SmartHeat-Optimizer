@@ -40,10 +40,13 @@ fill_false_list = [
                     'heatdistribution_recommendation_installthermostaticvalve', 'heatdistribution_recommendation_installrpmvalve',
                     'building_floorareaheated_additionalareasplanned']
 fill_null_list =  [
+        "kwh_received_heatpump",
         "kwh_returned_total",
         "building_floorareaheated_basement",
         "building_floorareaheated_topfloor",
         "building_floorareaheated_secondfloor",
+        "building_floorareaheated_total",
+        "building_pvsystem_size"
 
     ]
 fill_median_list = ["building_constructionyear", "building_residents"]
@@ -105,19 +108,13 @@ feature_cols = [
     "kwh_received_heatpump",
     "kwh_returned_total",
     "temperature_avg_daily",
+     "building_type_multi_family_house", "building_type_other", "building_type_single_family_house",
     "swissix_base",
-    "building_type",
     "weekday",
-    "is_weekend",
-    "is_heating_season",
-    "renovation_score",
-    "heating_amount",
-    "price_lag_30d",
-    "price_lag_90d",
-    "price_rolling_mean_30d",
-    "price_rolling_mean_90d",
-    "price_relative_to_month",
-    "solar_thermal_potential"
+    "is_weekend", "is_heating_season", 
+    "renovation_score", "heating_amount", "price_lag_30d", 
+    "price_relative_to_month", "solar_thermal_potential",
+    "temp_inertia_ema_3d", "temp_delta_1d", "month_sin", "month_cos"
 ]
 
 class Schema(pa.DataFrameModel):

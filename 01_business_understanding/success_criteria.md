@@ -32,23 +32,23 @@ Dieses Dokument definiert die messbaren Erfolgskriterien für das Analyseprojekt
 - [x] Statistische Zusammenfassung erstellt
 
 ### Phase 5: Feature Engineering
-- [] Relevante Features aus Rohdaten erstellt
-- [] Feature-Importance-Analyse durchgeführt
-- [] Feature-Selektion durchgeführt
-- [] Erstellte Features validiert
+- [x] Relevante Features aus Rohdaten erstellt
+- [X] Feature-Importance-Analyse durchgeführt
+- [X] Feature-Selektion durchgeführt
+- [X] Erstellte Features validiert
 - [] Feature-Engineering-Pipeline dokumentiert
 
 ### Phase 6: Modellierung
-- [] Mehrere Algorithmen getestet (mindestens 3)
-- [] Hyperparameter-Tuning durchgeführt
-- [] Bestes Modell anhand von Metriken ausgewählt
+- [x] Mehrere Algorithmen getestet (mindestens 3)
+- [x] Hyperparameter-Tuning durchgeführt
+- [x] Bestes Modell anhand von Metriken ausgewählt
 - [] Modellannahmen validiert
 - [] Trainingsprozess dokumentiert
 
 ### Phase 7: Evaluation
-- [] Modellleistungsmetriken berechnet
-- [] Kreuzvalidierung durchgeführt
-- [] Modellvergleich durchgeführt
+- [x] Modellleistungsmetriken berechnet
+- [x] Kreuzvalidierung durchgeführt
+- [x] Modellvergleich durchgeführt
 - [] Interpretierbarkeit der Segmente bewertet
 - [] Evaluationsbericht erstellt
 
