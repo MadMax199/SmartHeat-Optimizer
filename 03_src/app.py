@@ -75,7 +75,7 @@ data_combined = join_data(
     joins=[
         {"df": df_household_info, "on": ["household_id"], "how": "left"},
         {"df": df_weather, "on": ["weather_id", "date"], "how": "left"},
-        {"df": df_protocols, "left_on": ["household_id"], "right_on": ["household_id_info"], "how": "left"},
+        {"df": df_protocols, "left_on": ["household_id", "date"], "right_on": ["household_id_info"], "how": "left"}, --discuss
         {"df": df_prices, "on": ["date"], "how": "left"},
     ]
 )

@@ -10,6 +10,18 @@ def add_weekend(df: pl.DataFrame) -> pl.DataFrame:
         pl.when(pl.col("weekday").is_in([6, 7])).then(1).otherwise(0).alias("is_weekend")
     )
 
+
+def add_heatpump(df: pl.DataFrame) -> pl.DataFrame:
+    return df.with_columns(
+        pl.when(pl.col("weekday").is_in([6, 7])).then(1).otherwise(0).alias("is_weekend")
+    )
+
+
+def add_pv(df: pl.DataFrame) -> pl.DataFrame:
+    return df.with_columns(
+        pl.when(pl.col("weekday").is_in([6, 7])).then(1).otherwise(0).alias("is_weekend")
+    )
+
 def heating_season(df: pl.DataFrame) -> pl.DataFrame:
     return df.with_columns(
         pl.col("date").dt.month().is_in([10, 11, 12, 1, 2, 3])

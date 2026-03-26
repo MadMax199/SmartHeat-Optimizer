@@ -36,14 +36,14 @@ Dieses Dokument definiert die messbaren Erfolgskriterien für das Analyseprojekt
 - [X] Feature-Importance-Analyse durchgeführt
 - [X] Feature-Selektion durchgeführt
 - [X] Erstellte Features validiert
-- [] Feature-Engineering-Pipeline dokumentiert
+- [x] Feature-Engineering-Pipeline dokumentiert
 
 ### Phase 6: Modellierung
 - [x] Mehrere Algorithmen getestet (mindestens 3)
 - [x] Hyperparameter-Tuning durchgeführt
 - [x] Bestes Modell anhand von Metriken ausgewählt
-- [] Modellannahmen validiert
-- [] Trainingsprozess dokumentiert
+- [X] Modellannahmen validiert
+- [X] Trainingsprozess dokumentiert
 
 ### Phase 7: Evaluation
 - [x] Modellleistungsmetriken berechnet

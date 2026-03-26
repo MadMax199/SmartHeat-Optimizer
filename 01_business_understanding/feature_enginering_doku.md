@@ -7,44 +7,25 @@ Diese Dokumentation beschreibt die Vorgehensweise beim Feature Engineering
 In der Pipeline werden mehrere Features für die Vorhersage des Energieverbrauchs generiert. Die Beschreibung der einzelnen Features folgt der Reihenfolge im features.py-File.
 
 Wochentage
-Auf Basis des Datums werden numerische Werte generiert, die die Wochentage abbilden. So erhält beispielsweise der Sonntag den Wert 7, der Samstag den Wert 6 usw.
-
+Auf Basis des Datums werden numerische Werte generiert, die die Wochentage abbilden, wobei Sonntag den Wert 7 und Montag den Wert 1 erhält.
 Wochenende
-Die Wochentage dienen als Grundlage, um einen Wochenend-Indikator zu erzeugen. Tage, die auf ein Wochenende fallen, erhalten den Wert 1, während Werktage den Wert 0 erhalten.
-
+Darauf aufbauend wird ein Wochenend-Indikator erzeugt, der für Samstag und Sonntag den Wert 1 und für Werktage den Wert 0 annimmt.
 Heizperiode
-Die Heizperiode in Mitteleuropa dauert typischerweise von Oktober bis März. Entsprechend wird ein Dummy-Feature erstellt, das in diesen Monaten den Wert 1 und in den übrigen Monaten den Wert 0 annimmt.
-
-Renovation Index
-Der Renovationsindex summiert mehrere Dummy-Variablen, die angeben, ob Renovierungen an bestimmten Gebäudeteilen (z. B. Fenster, Dach oder Wände) durchgeführt wurden.
-
+Die Heizperiode in Mitteleuropa dauert typischerweise von Oktober bis März. Entsprechend wird ein Dummy-Feature erstellt, das in diesen Monaten den Wert 1 und in den übrigen Monaten den Wert 0 annimmt. 
+Renovationsindex
+Der Renovationsindex summiert mehrere Dummy-Variablen, die angeben, ob Renovierungen an bestimmten Gebäudeteilen wie Fenstern, Dach oder Wänden durchgeführt wurden.
 Heizbedarf
 Der Heizbedarf wird aus der beheizten Fläche und der Anzahl der Bewohner eines Gebäudes berechnet.
-
 Preisfeatures
 Auf Basis der Day-Ahead-Strompreise werden Lag-Features sowie gleitende Durchschnittswerte für 30 und 90 Tage berechnet. Zusätzlich werden Abweichungen des aktuellen Tagespreises von diesen Durchschnittswerten bestimmt.
-
 Solarpotenzial
-Das Potenzial zur Solarstromerzeugung wird durch die Multiplikation der PV-Anlagengröße mit der täglichen Sonnenscheindauer approximiert.
-
+Das Solarpotenzial wird durch die Multiplikation der PV-Anlagengröße mit der täglichen Sonnenscheindauer approximiert.
 Thermische Dynamik
-Um die thermische Trägheit von Gebäuden sowie kurzfristige Temperaturveränderungen abzubilden, werden zwei zusätzliche Temperaturfeatures berechnet:
-temp_inertia_ema_3d: ein exponentiell gewichteter gleitender Durchschnitt der Temperatur über drei Tage, der das thermische Gedächtnis eines Gebäudes approximiert.
-temp_delta_1d: die tägliche Veränderung der Durchschnittstemperatur im Vergleich zum Vortag.
-
-Zyklische Features
-Um saisonale Effekte besser abzubilden, werden zyklische Transformationen (Sinus und Cosinus) für Monatswerte berechnet.
-
+Um die thermische Trägheit von Gebäuden sowie kurzfristige Temperaturveränderungen abzubilden, werden zwei zusätzliche Temperaturfeatures berechnet: temp_inertia_ema_3d als exponentiell gewichteter gleitender Durchschnitt der Temperatur über drei Tage sowie temp_delta_1d als tägliche Veränderung der Durchschnittstemperatur zum Vortag. Zur besseren Abbildung saisonaler Effekte werden zyklische Transformationen (Sinus und Cosinus) für Monatswerte berechnet.
 Gebäudetypen
-Für die Gebäudetypen werden Dummy-Variablen (One-Hot-Encoding) erstellt. Die Kategorie „Unbekannt“ dient dabei als Referenzkategorie und wird nicht explizit als Feature kodiert.
+Für die Gebäudetypen werden Dummy-Variablen mittels One-Hot-Encoding erstellt, wobei die Kategorie „Unbekannt" als Referenzkategorie dient und nicht explizit kodiert wird.
 
-Weitere verwendete Variablen
-
-Zusätzlich zu den erzeugten Features werden weitere Variablen direkt aus dem Datensatz verwendet. Dazu zählen:
-kwh_received_heatpump – Stromverbrauch der Wärmepumpe
-kwh_returned_total – Gesamtmenge des eingespeisten Stroms
-temperature_avg_daily – durchschnittliche Tagestemperatur
-swissix_base – Day-Ahead-Strompreis
+Zusätzlich zu den erzeugten Features werden folgende Variablen direkt aus dem Datensatz verwendet: kwh_received_heatpump, kwh_returned_total, temperature_avg_daily sowie swissix_base.
 
 ## 🛠 Feature Selektion, Importance und Validierung
 
@@ -83,4 +64,3 @@ is_weekend: Minimaler Effekt, kaum relevant
 renovation_score: Fast kein Einfluss
 is_heating_seaso: Redundant zu temperature_avg_daily
 
-Die F
