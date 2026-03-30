@@ -5,9 +5,6 @@ import glob
 import pandera.polars as pa
 import polars as pl
 
-import polars as pl
-import pandera.polars as pa
-
 fill_false_list = [
                     "building_pvsystem_available",
                     "installation_haspvsystem",
@@ -114,7 +111,7 @@ feature_cols = [
     "is_weekend", "is_heating_season", 
     "renovation_score", "heating_amount", "price_lag_30d", 
     "price_relative_to_month", "solar_thermal_potential",
-    "temp_inertia_ema_3d", "temp_delta_1d", "month_sin", "month_cos"
+    "temp_inertia_ema_3d", "temp_delta_1d", "month_sin", "month_cos", "is_heatpump", "is_pv"
 ]
 
 feature_cols_cleaned = [
@@ -127,7 +124,7 @@ feature_cols_cleaned = [
     "swissix_base",
     "weekday",
     "month_sin",
-    "month_cos"
+    "month_cos",
 ]
 
 class Schema(pa.DataFrameModel):

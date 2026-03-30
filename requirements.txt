@@ -1,30 +1,33 @@
-
-# Datenanalyse & Manipulation
+# --- Core Stack (Zuerst fixieren, um NumPy 2.x zu verhindern) ---
+numpy>=1.26.0,<2.0.0
 polars>=1.0.0
-# NumPy auf < 2.0 begrenzen, um Kompatibilität mit numba/ydata-profiling zu garantieren
-numpy>=1.23.5,<2.0.0
-pandas
-pandera
+pandas>=2.2.0
+pandera[polars]>=0.20.0
 
-# Visualisierung
-matplotlib
-seaborn
-plotly
-ydata_profiling
+# --- Datenanalyse & Profiling ---
+# ydata-profiling ist sehr strikt bei numpy-versionen
+ydata_profiling>=4.9.0
 
-# Machine Learning
-scikit-learn
-shap
-xgboost
-lightgbm
-optuna 
+# --- Visualisierung ---
+matplotlib>=3.8.0
+seaborn>=0.13.0
+plotly>=5.20.0
 
-# Jupyter Notebook Support
+# --- Machine Learning (Baumbasierte Modelle für HEAPO) ---
+scikit-learn>=1.4.0
+# SHAP benötigt oft eine spezifische numpy-Version < 2
+shap>=0.45.0
+xgboost>=2.0.0
+lightgbm>=4.3.0
+optuna>=3.6.0
+
+# --- Jupyter & Storage ---
 ipykernel
 notebook
-pyarrow
+# pyarrow ist zwingend für .write_parquet() in Polars
+pyarrow>=15.0.0
 
-# Utilities & Scraping
+# --- Utilities ---
 tqdm
 python-dotenv
 selenium

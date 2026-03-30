@@ -13,13 +13,17 @@ def add_weekend(df: pl.DataFrame) -> pl.DataFrame:
 
 def add_heatpump(df: pl.DataFrame) -> pl.DataFrame:
     return df.with_columns(
-        pl.when(pl.col("weekday").is_in([6, 7])).then(1).otherwise(0).alias("is_weekend")
+        pl.when(pl.col("group") == "treatment") 
+        .then(1)
+        .otherwise(0)
+        .cast(pl.Int8)
+        .alias("is_heatpump")
     )
 
 
 def add_pv(df: pl.DataFrame) -> pl.DataFrame:
     return df.with_columns(
-        pl.when(pl.col("weekday").is_in([6, 7])).then(1).otherwise(0).alias("is_weekend")
+        pl.col("installation_haspvsystem").cast(pl.Int8).alias("is_pv")
     )
 
 def heating_season(df: pl.DataFrame) -> pl.DataFrame:
@@ -47,11 +51,8 @@ def heating_amount(df: pl.DataFrame) -> pl.DataFrame:
 
 
 def add_price_features(df: pl.DataFrame) -> pl.DataFrame:
-    """Preisfeatures mit Lag & Rolling.
-    - Forward-Fill: schliesst Luecken innerhalb der Haushalt-Zeitreihe
-    - Backward-Fill: deckt den Anfang ab wenn kein Vorwert existiert
-    - Globaler Median: Fallback fuer Haushalte ganz ohne Preisdaten
-    """
+   
+    
     df = df.sort(["household_id", "date"]).with_columns([
         pl.col("swissix_base").shift(30).over("household_id").alias("price_lag_30d"),
         pl.col("swissix_base").shift(90).over("household_id").alias("price_lag_90d"),

@@ -5,10 +5,7 @@ import numpy as np
 from pathlib import Path
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import r2_score, mean_absolute_error
-from sklearn.model_selection import TimeSeriesSplit, cross_val_score
-import matplotlib.pyplot as plt
-import seaborn as sns
-import shap
+from sklearn.model_selection import TimeSeriesSplit
 from sklearn.model_selection import TimeSeriesSplit, cross_validate
 
 # --- PFAD SETUP ---
@@ -40,7 +37,8 @@ from features import (
 add_weekdays,add_weekend, 
 heating_season, renovation_index,
 heating_amount, add_price_features, 
-solar_potentials, add_thermal_dynamics, add_cyclic_features, add_building_type_dummies
+solar_potentials, add_thermal_dynamics, add_cyclic_features, add_building_type_dummies,
+add_heatpump, add_pv
 )
 from utilis import (
     train_test_split, correlated_features_drop,
@@ -75,7 +73,7 @@ data_combined = join_data(
     joins=[
         {"df": df_household_info, "on": ["household_id"], "how": "left"},
         {"df": df_weather, "on": ["weather_id", "date"], "how": "left"},
-        {"df": df_protocols, "left_on": ["household_id", "date"], "right_on": ["household_id_info"], "how": "left"}, --discuss
+        {"df": df_protocols, "left_on": ["household_id"], "right_on": ["household_id_info"], "how": "left"}, 
         {"df": df_prices, "on": ["date"], "how": "left"},
     ]
 )
@@ -110,10 +108,6 @@ compare_imputation(
 )
 
 
-# ---  Zwischenspeichern Raw-Combined --- Notwendig um Pipline Entwicklung zu beschleunigen
-output_path_temp = root_dir / "02_data" / "temp" / "combined_data.csv"
-output_path_temp.parent.mkdir(parents=True, exist_ok=True)
-data_combined_filled.write_csv(str(output_path_temp), separator=";")
 
 # --- VALIDATION (Teil 1) ---
 print("Starte erste Validierung...")
@@ -152,6 +146,8 @@ df_ml = (
     .pipe(add_thermal_dynamics)
     .pipe(add_cyclic_features)
     .pipe(add_building_type_dummies)
+    .pipe(add_heatpump)
+    .pipe(add_pv)
     .select(["date",target_col] + feature_cols)
 )
 check_amount_nulls(df_ml)
@@ -199,6 +195,8 @@ X_train_final, X_test_final, final_features = correlated_features_drop(
 #---Modellvergleich um das beste Modell zu finden
 comparison = compare_models(X_train_final, X_test_final, y_train_red, y_test_red)
 print(comparison)
+
+#--Vergleich ob logartmiertes Modell besser geeignet ist aufgrund der Verteilung der Residuen
 print("\n--- LightGBM Tuning (Standard) ---")
 lgbm_model_std, study_std = tune_lightgbm(
     X_train=X_train_final,
