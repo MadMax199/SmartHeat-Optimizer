@@ -372,7 +372,7 @@ def plot_business_drivers(model, X_sample, output_dir, filename="business_driver
     plt.figure(figsize=(10, 8))
     shap.summary_plot(shap_values, X_sample, plot_type="bar", show=False)
     
-    plt.title("Business-Treiber: Welche Faktoren beeinflussen den Heizverbrauch?", fontsize=14)
+    plt.title("Business-Treiber: Welche Faktoren beeinflussen den Verbrauch?", fontsize=14)
     plt.xlabel("Durchschnittlicher Einfluss auf die Vorhersage (kWh)", fontsize=12)
     plt.tight_layout()
     

@@ -125,6 +125,7 @@ feature_cols_cleaned = [
     "weekday",
     "month_sin",
     "month_cos",
+    "is_pv"
 ]
 
 class Schema(pa.DataFrameModel):
