@@ -4,7 +4,7 @@
 Brudermüller, T., et al. (2025). HEAPO – An Open Dataset for Heat Pump Optimization.
 
 Dieses Repo beinhaltet eine strukturierte Datenpipeline zur **tagesbasierten Vorhersage 
-des Stromverbrauchs von Schweizer Wärmepumpenhaushalten**. Das Projekt integriert 
+des Stromverbrauchs von Schweizer Haushalten**. Das Projekt integriert 
 Smart-Meter-Messungen, Gebäudeeigenschaften, Vor-Ort-Audit-Protokolle, Wetterdaten 
 und Strompreise, um auf Basis von Machine-Learning-Methoden präzise Verbrauchsprognosen 
 für Energieversorger zu erstellen.
