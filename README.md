@@ -16,10 +16,7 @@ Business-Verständnis, Datenaufbereitung, Feature Engineering, Modellierung und 
 
 ## 🎯 Forschungsfrage
 
-Inwiefern lässt sich der tägliche Stromverbrauch von Schweizer Haushalten im Kontext 
-der Elektrifizierung des Wärmesektors unter Einfluss von Wetterbedingungen, 
-Gebäudeeigenschaften und Strompreissignalen mithilfe von Machine-Learning-Methoden 
-zuverlässig vorhersagen?
+Wie kann Machine Learning zur zuverlässigen Prognose des täglichen Stromverbrauchs von Schweizer Haushalten eingesetzt werden, um Lastplanung und Beschaffung im Energiesektor zu verbessern?
 
 ---
 
